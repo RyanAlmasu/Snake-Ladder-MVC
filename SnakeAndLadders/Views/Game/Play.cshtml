@@ -1,0 +1,371 @@
+@model SnakeAndLadders.Models.GameViewModel
+
+@{
+    ViewData["Title"] = "Play Snake and Ladders";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Snake and Ladders Game</h3>
+                </div>
+                <div class="card-body">
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            @TempData["ErrorMessage"]
+                        </div>
+                    }
+
+                    <div class="game-board">
+                        <div class="board" style="grid-template-rows: repeat(@Model.Board.Rows, 1fr); grid-template-columns: repeat(@Model.Board.Columns, 1fr);">
+                            @{
+                                var totalCells = Model.Board.Rows * Model.Board.Columns;
+                                for (int i = totalCells; i > 0; i--)
+                                {
+                                    var position = i;
+                                    var row = (totalCells - position) / Model.Board.Columns;
+                                    var isEvenRow = row % 2 == 0;
+                                    var adjustedCol = isEvenRow 
+                                        ? position % Model.Board.Columns == 0 ? 0 : Model.Board.Columns - (position % Model.Board.Columns)
+                                        : position % Model.Board.Columns == 0 ? Model.Board.Columns - 1 : (position % Model.Board.Columns) - 1;
+                                    
+                                    <div class="cell @(position % 2 == 0 ? "even" : "odd")" data-position="@position">
+                                        <span class="cell-number">@position</span>
+                                        
+                                        @foreach (var player in Model.Players.Where(p => p.Position == position))
+                                        {
+                                            <div class="player-token" style="background-color: @player.TokenColor;" title="@player.Name"></div>
+                                        }
+                                    </div>
+                                }
+                            }
+                            
+                            <!-- Draw snakes -->
+                            @foreach (var snake in Model.Board.Snakes)
+                            {
+                                <svg class="snake-path">
+                                    <path d="M0,0 C50,50 30,-30 80,0" class="snake" />
+                                </svg>
+                            }
+                            
+                            <!-- Draw ladders -->
+                            @foreach (var ladder in Model.Board.Ladders)
+                            {
+                                <svg class="ladder-path">
+                                    <line x1="50%" y1="0" x2="50%" y2="100%" class="ladder" />
+                                </svg>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h4>Game Status</h4>
+                </div>
+                <div class="card-body">
+                    @if (Model.IsGameOver)
+                    {
+                        var winner = Model.Players.FirstOrDefault(p => p.Id == Model.WinnerId);
+                        <div class="alert alert-success">
+                            <h4>Game Over!</h4>
+                            <p>@winner?.Name has won the game in @Model.MoveCount moves!</p>
+                        </div>
+                        
+                        <form asp-action="Reset" asp-route-id="@Model.GameId" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-primary">Play Again</button>
+                        </form>
+                        
+                        <form asp-action="Delete" asp-route-id="@Model.GameId" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-danger">End Game</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <div>
+                            <strong>Current Turn:</strong>
+                            @{
+                                var currentPlayer = Model.Players.FirstOrDefault(p => p.Id == Model.CurrentPlayerId);
+                            }
+                            @if (currentPlayer != null)
+                            {
+                                <span class="badge" style="background-color: @currentPlayer.TokenColor; color: white;">
+                                    @currentPlayer.Name
+                                </span>
+                            }
+                        </div>
+                        
+                        @if (Model.LastRoll.HasValue)
+                        {
+                            <div class="mt-2">
+                                <strong>Last Roll:</strong> <span class="dice">@Model.LastRoll</span>
+                            </div>
+                        }
+                        
+                        <div class="mt-3">
+                            <form asp-action="RollDice" asp-route-id="@Model.GameId" method="post">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-primary">Roll Dice</button>
+                            </form>
+                        </div>
+                    }
+                </div>
+            </div>
+            
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h4>Players</h4>
+                </div>
+                <div class="card-body">
+                    <div class="player-list">
+                        @foreach (var player in Model.Players.OrderByDescending(p => p.Position))
+                        {
+                            <div class="player-item">
+                                <div class="player-token-small" style="background-color: @player.TokenColor;"></div>
+                                <span class="player-name">@player.Name</span>
+                                <span class="player-position">Position: @player.Position</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h4>Legend</h4>
+                </div>
+                <div class="card-body">
+                    <div class="legend-item">
+                        <div class="legend-icon ladder-icon"></div>
+                        <span>Ladder - Moves you up</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-icon snake-icon"></div>
+                        <span>Snake - Moves you down</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .game-board {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .board {
+            display: grid;
+            grid-gap: 2px;
+            aspect-ratio: 1;
+            width: 100%;
+            border: 3px solid #333;
+            background-color: #333;
+            position: relative;
+        }
+        
+        .cell {
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+        
+        .cell.even {
+            background-color: #e0e0e0;
+        }
+        
+        .cell-number {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            font-size: 0.8rem;
+            color: #777;
+        }
+        
+        .player-token {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            margin: 2px;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+            z-index: 2;
+        }
+        
+        .player-token-small {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        .player-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .player-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-radius: 4px;
+            background-color: #f8f9fa;
+        }
+        
+        .player-name {
+            flex: 1;
+            font-weight: bold;
+        }
+        
+        .player-position {
+            margin-left: auto;
+        }
+        
+        .snake-path, .ladder-path {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .snake {
+            stroke: #d62828;
+            stroke-width: 8px;
+            fill: none;
+            stroke-linecap: round;
+        }
+        
+        .ladder {
+            stroke: #33a853;
+            stroke-width: 10px;
+            stroke-dasharray: 15, 15;
+        }
+        
+        .dice {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border: 2px solid #333;
+            border-radius: 8px;
+            text-align: center;
+            line-height: 40px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .legend-icon {
+            width: 30px;
+            height: 15px;
+            margin-right: 10px;
+        }
+        
+        .ladder-icon {
+            background: linear-gradient(90deg, #33a853 50%, transparent 50%);
+            background-size: 20px 20px;
+        }
+        
+        .snake-icon {
+            background-color: #d62828;
+            border-radius: 8px;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Show proper snake and ladder paths
+            function drawSnakesAndLadders() {
+                // Logic to draw snakes correctly
+                @foreach (var snake in Model.Board.Snakes)
+                {
+                    <text>
+                    drawSnake(@snake.HeadPosition, @snake.TailPosition);
+                    </text>
+                }
+                
+                // Logic to draw ladders correctly
+                @foreach (var ladder in Model.Board.Ladders)
+                {
+                    <text>
+                    drawLadder(@ladder.BottomPosition, @ladder.TopPosition);
+                    </text>
+                }
+            }
+            
+            function drawSnake(head, tail) {
+                const headCell = $("[data-position='" + head + "']");
+                const tailCell = $("[data-position='" + tail + "']");
+                
+                if (headCell.length && tailCell.length) {
+                    const headPos = headCell.position();
+                    const tailPos = tailCell.position();
+                    
+                    const svgContainer = $('<svg class="snake-path"></svg>');
+                    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    
+                    // Calculate control points for bezier curve
+                    const dx = tailPos.left - headPos.left;
+                    const dy = tailPos.top - headPos.top;
+                    const midX = headPos.left + dx/2;
+                    const midY = headPos.top + dy/2;
+                    
+                    // Path data for curved snake
+                    path.setAttribute('d', `M${headPos.left},${headPos.top} Q${midX+40},${midY-40} ${tailPos.left},${tailPos.top}`);
+                    path.setAttribute('class', 'snake');
+                    
+                    svgContainer.append(path);
+                    $('.board').append(svgContainer);
+                }
+            }
+            
+            function drawLadder(bottom, top) {
+                const bottomCell = $("[data-position='" + bottom + "']");
+                const topCell = $("[data-position='" + top + "']");
+                
+                if (bottomCell.length && topCell.length) {
+                    const bottomPos = bottomCell.position();
+                    const topPos = topCell.position();
+                    
+                    const svgContainer = $('<svg class="ladder-path"></svg>');
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    
+                    line.setAttribute('x1', bottomPos.left);
+                    line.setAttribute('y1', bottomPos.top);
+                    line.setAttribute('x2', topPos.left);
+                    line.setAttribute('y2', topPos.top);
+                    line.setAttribute('class', 'ladder');
+                    
+                    svgContainer.append(line);
+                    $('.board').append(svgContainer);
+                }
+            }
+            
+            setTimeout(drawSnakesAndLadders, 500);
+        });
+    </script>
+}

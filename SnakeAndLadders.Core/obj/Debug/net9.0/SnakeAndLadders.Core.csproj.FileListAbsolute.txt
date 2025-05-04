@@ -1,0 +1,11 @@
+D:\Formulatrix\SnakeAndLaddersMVC\SnakeAndLadders.Core\bin\Debug\net9.0\SnakeAndLadders.Core.deps.json
+D:\Formulatrix\SnakeAndLaddersMVC\SnakeAndLadders.Core\bin\Debug\net9.0\SnakeAndLadders.Core.dll
+D:\Formulatrix\SnakeAndLaddersMVC\SnakeAndLadders.Core\bin\Debug\net9.0\SnakeAndLadders.Core.pdb
+D:\Formulatrix\SnakeAndLaddersMVC\SnakeAndLadders.Core\obj\Debug\net9.0\SnakeAndLadders.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\Formulatrix\SnakeAndLaddersMVC\SnakeAndLadders.Core\obj\Debug\net9.0\SnakeAndLadders.Core.AssemblyInfoInputs.cache
+D:\Formulatrix\SnakeAndLaddersMVC\SnakeAndLadders.Core\obj\Debug\net9.0\SnakeAndLadders.Core.AssemblyInfo.cs
+D:\Formulatrix\SnakeAndLaddersMVC\SnakeAndLadders.Core\obj\Debug\net9.0\SnakeAndLadders.Core.csproj.CoreCompileInputs.cache
+D:\Formulatrix\SnakeAndLaddersMVC\SnakeAndLadders.Core\obj\Debug\net9.0\SnakeAndLadders.Core.dll
+D:\Formulatrix\SnakeAndLaddersMVC\SnakeAndLadders.Core\obj\Debug\net9.0\refint\SnakeAndLadders.Core.dll
+D:\Formulatrix\SnakeAndLaddersMVC\SnakeAndLadders.Core\obj\Debug\net9.0\SnakeAndLadders.Core.pdb
+D:\Formulatrix\SnakeAndLaddersMVC\SnakeAndLadders.Core\obj\Debug\net9.0\ref\SnakeAndLadders.Core.dll

@@ -1,0 +1,28 @@
+@{
+    ViewData["Title"] = "Snake and Ladders";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Snake and Ladders</h1>
+    <p>A classic board game where players roll dice to move their pieces with a twist of snakes and ladders.</p>
+
+    <div class="mt-4">
+        <a asp-action="New" class="btn btn-primary btn-lg">Start New Game</a>
+    </div>
+
+    <div class="mt-5">
+        <h3>Game Rules</h3>
+        <div class="text-start mx-auto" style="max-width: 600px;">
+            <ul>
+                <li>Players take turns rolling a dice to move their token.</li>
+                <li>The board has 100 cells, numbered from 1 to 100.</li>
+                <li>Ladders move you up the board to a higher-numbered cell.</li>
+                <li>Snakes move you down the board to a lower-numbered cell.</li>
+                <li>The first player to reach the 100th cell wins.</li>
+                <li><strong>Bounce Back Rule:</strong> To win, you must land exactly on the 100th cell. If your roll would take you beyond cell 100, you'll bounce back the extra spaces. For example, if you're on cell 96 and roll a 6, you'll move to 100 and then bounce back 2 spaces to land on cell 98.</li>
+                <li>After landing on a snake head or ladder bottom, the player immediately moves to the corresponding snake tail or ladder top.</li>
+                <li>The game continues until a player lands exactly on cell 100.</li>
+            </ul>
+        </div>
+    </div>
+</div>

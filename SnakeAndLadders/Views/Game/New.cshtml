@@ -1,0 +1,111 @@
+@model SnakeAndLadders.Models.NewGameViewModel
+
+@{
+    ViewData["Title"] = "New Game";
+}
+
+<div class="container">
+    <h1>New Game</h1>
+    
+    <form asp-action="Create" method="post">
+        <input type="hidden" asp-for="GameId" />
+        
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        
+        <div class="mb-4">
+            <h3>Players</h3>
+            <div id="players-container">
+                @for (int i = 0; i < Model.Players.Count; i++)
+                {
+                    <div class="card mb-3 player-card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Player Name</label>
+                                        <input type="text" class="form-control" asp-for="Players[i].Name" required />
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label>Token Color</label>
+                                        <input type="color" class="form-control" asp-for="Players[i].TokenColor" required />
+                                    </div>
+                                </div>
+                                <div class="col-md-1 d-flex align-items-end">
+                                    @if (i >= 2) // Minimum 2 players required
+                                    {
+                                        <button type="button" class="btn btn-danger remove-player" title="Remove Player">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            
+            <button type="button" id="add-player" class="btn btn-secondary">
+                <i class="bi bi-person-plus"></i> Add Player
+            </button>
+        </div>
+        
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Start Game</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Add new player
+            $("#add-player").click(function() {
+                const playerCount = $(".player-card").length;
+                const template = `
+                    <div class="card mb-3 player-card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Player Name</label>
+                                        <input type="text" class="form-control" name="Players[${playerCount}].Name" 
+                                            value="Player ${playerCount + 1}" required />
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label>Token Color</label>
+                                        <input type="color" class="form-control" name="Players[${playerCount}].TokenColor" 
+                                            value="#${Math.floor(Math.random()*16777215).toString(16).padStart(6, '0')}" required />
+                                    </div>
+                                </div>
+                                <div class="col-md-1 d-flex align-items-end">
+                                    <button type="button" class="btn btn-danger remove-player" title="Remove Player">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                $("#players-container").append(template);
+            });
+            
+            // Remove player
+            $(document).on("click", ".remove-player", function() {
+                $(this).closest(".player-card").remove();
+                // Renumber the inputs
+                $(".player-card").each(function(index) {
+                    $(this).find("input[name^='Players']").each(function() {
+                        const name = $(this).attr("name");
+                        const newName = name.replace(/\[\d+\]/, `[${index}]`);
+                        $(this).attr("name", newName);
+                    });
+                });
+            });
+        });
+    </script>
+}
