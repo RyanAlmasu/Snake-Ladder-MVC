@@ -59,39 +59,32 @@ namespace SnakeAndLadders.Models
 
     public class BoardViewModel
     {
-        public int Rows { get; set; } = 10;
-        public int Columns { get; set; } = 10;
+        public int Rows { get; set; }
+        public int Columns { get; set; }
         public List<SnakeViewModel> Snakes { get; set; } = new List<SnakeViewModel>();
         public List<LadderViewModel> Ladders { get; set; } = new List<LadderViewModel>();
 
         public BoardViewModel()
         {
-            // Default snakes for a standard 10x10 board
-            Snakes = new List<SnakeViewModel>
-            {
-                // new SnakeViewModel { HeadPosition = 98, TailPosition = 78 },
-                // new SnakeViewModel { HeadPosition = 95, TailPosition = 75 },
-                // new SnakeViewModel { HeadPosition = 93, TailPosition = 73 },
-                // new SnakeViewModel { HeadPosition = 87, TailPosition = 24 },
-                new SnakeViewModel { HeadPosition = 64, TailPosition = 60 },
-                new SnakeViewModel { HeadPosition = 62, TailPosition = 19 },
-                new SnakeViewModel { HeadPosition = 54, TailPosition = 34 },
-                new SnakeViewModel { HeadPosition = 17, TailPosition = 7 }
-            };
-
-            // Default ladders for a standard 10x10 board
-            Ladders = new List<LadderViewModel>
-            {
-                // new LadderViewModel { BottomPosition = 1, TopPosition = 38 },
-                // new LadderViewModel { BottomPosition = 4, TopPosition = 14 },
-                // new LadderViewModel { BottomPosition = 9, TopPosition = 31 },
-                // new LadderViewModel { BottomPosition = 21, TopPosition = 42 },
-                // new LadderViewModel { BottomPosition = 28, TopPosition = 84 },
-                new LadderViewModel { BottomPosition = 36, TopPosition = 44 },
-                new LadderViewModel { BottomPosition = 51, TopPosition = 67 },
-                new LadderViewModel { BottomPosition = 71, TopPosition = 91 },
-                // new LadderViewModel { BottomPosition = 80, TopPosition = 100 }
-            };
+            // Create a standard board to get the default configuration
+            var standardBoard = new StandardBoard();
+            
+            // Get board dimensions from standard board
+            Rows = standardBoard.Rows;
+            Columns = standardBoard.Columns;
+            
+            // Get snakes and ladders from the standard board
+            Snakes = standardBoard.GetSnakes().Select(s => new SnakeViewModel
+            { 
+                HeadPosition = s.Head, 
+                TailPosition = s.Tail 
+            }).ToList();
+            
+            Ladders = standardBoard.GetLadders().Select(l => new LadderViewModel
+            { 
+                BottomPosition = l.Bottom, 
+                TopPosition = l.Top 
+            }).ToList();
         }
 
         public BoardViewModel(Board board)

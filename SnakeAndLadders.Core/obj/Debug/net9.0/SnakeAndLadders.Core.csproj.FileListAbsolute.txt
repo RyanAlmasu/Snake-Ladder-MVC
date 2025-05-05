@@ -21,3 +21,4 @@ D:\RyanIntern\SnakeLadderMVC\Snake-Ladder-MVC\SnakeAndLadders.Core\obj\Debug\net
 D:\RyanIntern\SnakeLadderMVC\Snake-Ladder-MVC\SnakeAndLadders.Core\obj\Debug\net9.0\refint\SnakeAndLadders.Core.dll
 D:\RyanIntern\SnakeLadderMVC\Snake-Ladder-MVC\SnakeAndLadders.Core\obj\Debug\net9.0\SnakeAndLadders.Core.pdb
 D:\RyanIntern\SnakeLadderMVC\Snake-Ladder-MVC\SnakeAndLadders.Core\obj\Debug\net9.0\ref\SnakeAndLadders.Core.dll
+D:\Formulatrix\SnakeAndLaddersMVC\SnakeAndLadders.Core\obj\Debug\net9.0\SnakeAndLadders.Core.sourcelink.json

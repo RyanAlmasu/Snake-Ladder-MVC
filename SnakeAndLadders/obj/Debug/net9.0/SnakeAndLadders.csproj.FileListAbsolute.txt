@@ -203,3 +203,4 @@ D:\RyanIntern\SnakeLadderMVC\Snake-Ladder-MVC\SnakeAndLadders\obj\Debug\net9.0\r
 D:\RyanIntern\SnakeLadderMVC\Snake-Ladder-MVC\SnakeAndLadders\obj\Debug\net9.0\SnakeAndLadders.pdb
 D:\RyanIntern\SnakeLadderMVC\Snake-Ladder-MVC\SnakeAndLadders\obj\Debug\net9.0\SnakeAndLadders.genruntimeconfig.cache
 D:\RyanIntern\SnakeLadderMVC\Snake-Ladder-MVC\SnakeAndLadders\obj\Debug\net9.0\ref\SnakeAndLadders.dll
+D:\Formulatrix\SnakeAndLaddersMVC\SnakeAndLadders\obj\Debug\net9.0\SnakeAndLadders.sourcelink.json
