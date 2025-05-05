@@ -46,17 +46,17 @@
                             <!-- Draw snakes -->
                             @foreach (var snake in Model.Board.Snakes)
                             {
-                                <svg class="snake-path">
+                                @* <svg class="snake-path">
                                     <path d="M0,0 C50,50 30,-30 80,0" class="snake" />
-                                </svg>
+                                </svg> *@
                             }
                             
                             <!-- Draw ladders -->
                             @foreach (var ladder in Model.Board.Ladders)
                             {
-                                <svg class="ladder-path">
+                                @* <svg class="ladder-path">
                                     <line x1="50%" y1="0" x2="50%" y2="100%" class="ladder" />
-                                </svg>
+                                </svg> *@
                             }
                         </div>
                     </div>
@@ -247,15 +247,15 @@
         
         .snake {
             stroke: #d62828;
-            stroke-width: 8px;
+            stroke-width: 5px;
             fill: none;
             stroke-linecap: round;
         }
         
         .ladder {
             stroke: #33a853;
-            stroke-width: 10px;
-            stroke-dasharray: 15, 15;
+            stroke-width: 5px;
+            stroke-dasharray: 10, 10;
         }
         
         .dice {

@@ -69,10 +69,10 @@ namespace SnakeAndLadders.Models
             // Default snakes for a standard 10x10 board
             Snakes = new List<SnakeViewModel>
             {
-                new SnakeViewModel { HeadPosition = 98, TailPosition = 78 },
-                new SnakeViewModel { HeadPosition = 95, TailPosition = 75 },
-                new SnakeViewModel { HeadPosition = 93, TailPosition = 73 },
-                new SnakeViewModel { HeadPosition = 87, TailPosition = 24 },
+                // new SnakeViewModel { HeadPosition = 98, TailPosition = 78 },
+                // new SnakeViewModel { HeadPosition = 95, TailPosition = 75 },
+                // new SnakeViewModel { HeadPosition = 93, TailPosition = 73 },
+                // new SnakeViewModel { HeadPosition = 87, TailPosition = 24 },
                 new SnakeViewModel { HeadPosition = 64, TailPosition = 60 },
                 new SnakeViewModel { HeadPosition = 62, TailPosition = 19 },
                 new SnakeViewModel { HeadPosition = 54, TailPosition = 34 },
@@ -82,15 +82,15 @@ namespace SnakeAndLadders.Models
             // Default ladders for a standard 10x10 board
             Ladders = new List<LadderViewModel>
             {
-                new LadderViewModel { BottomPosition = 1, TopPosition = 38 },
-                new LadderViewModel { BottomPosition = 4, TopPosition = 14 },
-                new LadderViewModel { BottomPosition = 9, TopPosition = 31 },
-                new LadderViewModel { BottomPosition = 21, TopPosition = 42 },
-                new LadderViewModel { BottomPosition = 28, TopPosition = 84 },
+                // new LadderViewModel { BottomPosition = 1, TopPosition = 38 },
+                // new LadderViewModel { BottomPosition = 4, TopPosition = 14 },
+                // new LadderViewModel { BottomPosition = 9, TopPosition = 31 },
+                // new LadderViewModel { BottomPosition = 21, TopPosition = 42 },
+                // new LadderViewModel { BottomPosition = 28, TopPosition = 84 },
                 new LadderViewModel { BottomPosition = 36, TopPosition = 44 },
                 new LadderViewModel { BottomPosition = 51, TopPosition = 67 },
                 new LadderViewModel { BottomPosition = 71, TopPosition = 91 },
-                new LadderViewModel { BottomPosition = 80, TopPosition = 100 }
+                // new LadderViewModel { BottomPosition = 80, TopPosition = 100 }
             };
         }
 

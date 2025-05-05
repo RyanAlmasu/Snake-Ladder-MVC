@@ -28,7 +28,7 @@ namespace SnakeAndLadders.Controllers
         {
             var model = new NewGameViewModel
             {
-                GameId = Guid.NewGuid().ToString("N"),
+                GameId = Guid.NewGuid().ToString(),
                 Players = new List<NewPlayerViewModel>
                 {
                     new NewPlayerViewModel { Name = "Player 1", TokenColor = "#FF0000" },

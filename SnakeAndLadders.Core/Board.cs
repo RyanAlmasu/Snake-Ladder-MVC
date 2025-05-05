@@ -111,25 +111,25 @@ namespace SnakeAndLadders.Core
         public StandardBoard()
         {
             // Add standard snakes
-            AddSnake(98, 78);
-            AddSnake(95, 75);
-            AddSnake(93, 73);
-            AddSnake(87, 24);
+            // AddSnake(98, 78);
+            // AddSnake(95, 75);
+            // AddSnake(93, 73);
+            // AddSnake(87, 24);
             AddSnake(64, 60);
             AddSnake(62, 19);
             AddSnake(54, 34);
             AddSnake(17, 7);
 
             // Add standard ladders
-            AddLadder(1, 38);
-            AddLadder(4, 14);
-            AddLadder(9, 31);
-            AddLadder(21, 42);
-            AddLadder(28, 84);
+            // AddLadder(1, 38);
+            // AddLadder(4, 14);
+            // AddLadder(9, 31);
+            // AddLadder(21, 42);
+            // AddLadder(28, 84);
             AddLadder(36, 44);
             AddLadder(51, 67);
             AddLadder(71, 91);
-            AddLadder(80, 100);
+            // AddLadder(80, 100);
         }
     }
 

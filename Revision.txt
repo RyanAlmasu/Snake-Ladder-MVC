@@ -1,0 +1,5 @@
+// Bug : 
+>>> Bug UI in 99 
+>>> User can input custom board, dice, snake, ladder
+>>> Class diagram ( Only MVC and GameEngine Library )
+>>> 
