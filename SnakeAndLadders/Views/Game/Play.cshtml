@@ -21,28 +21,55 @@
 
                     <div class="game-board">
                         <div class="board" style="grid-template-rows: repeat(@Model.Board.Rows, 1fr); grid-template-columns: repeat(@Model.Board.Columns, 1fr);">
-                            @{
-                                var totalCells = Model.Board.Rows * Model.Board.Columns;
-                                for (int i = totalCells; i > 0; i--)
+                    @{
+                        int rows = Model.Board.Rows;
+                        int cols = Model.Board.Columns;
+                        int totalCells = rows * cols; // Still useful for reference or checks
+
+                        // --- Outer loops iterate through VISUAL grid cells: Top-to-Bottom, Left-to-Right ---
+                        // This ensures the <div> elements are rendered in the order CSS expects for layout.
+                        for (int visualRow = 0; visualRow < rows; visualRow++)
+                        {
+                            for (int visualCol = 0; visualCol < cols; visualCol++)
+                            {
+                                // --- Calculate the 'position' number based on the Bottom-Left snaking start ---
+
+                                // 1. Determine the 'logical' row index where row 0 is the BOTTOM row.
+                                int logicalRow = (rows - 1) - visualRow; // Reverses the visual row index
+
+                                // 2. Determine the numbering direction for this logical row.
+                                //    Logical Row 0 (Bottom) goes L->R (1 to cols) -> Even row
+                                //    Logical Row 1 (Second from bottom) goes R->L (2*cols down to cols+1) -> Odd row
+                                bool isLogicalRowEven = logicalRow % 2 == 0;
+
+                                // 3. Calculate the position number based on the logical row and direction.
+                                int position;
+                                if (isLogicalRowEven) // Numbers increase Left-to-Right (e.g., logical row 0, 2, ...)
                                 {
-                                    var position = i;
-                                    var row = (totalCells - position) / Model.Board.Columns;
-                                    var isEvenRow = row % 2 == 0;
-                                    var adjustedCol = isEvenRow 
-                                        ? position % Model.Board.Columns == 0 ? 0 : Model.Board.Columns - (position % Model.Board.Columns)
-                                        : position % Model.Board.Columns == 0 ? Model.Board.Columns - 1 : (position % Model.Board.Columns) - 1;
-                                    
-                                    <div class="cell @(position % 2 == 0 ? "even" : "odd")" data-position="@position">
-                                        <span class="cell-number">@position</span>
-                                        
-                                        @foreach (var player in Model.Players.Where(p => p.Position == position))
-                                        {
-                                            <div class="player-token" style="background-color: @player.TokenColor;" title="@player.Name"></div>
-                                        }
-                                    </div>
+                                    // Base number for the start of this logical row + the visual column index
+                                    position = (logicalRow * cols) + visualCol + 1;
                                 }
-                            }
-                            
+                                else // Numbers increase Right-to-Left (e.g., logical row 1, 3, ...)
+                                {
+                                    // Base number for the START of the *next* logical row - the visual column index
+                                    // (This effectively counts down from the right side of the row)
+                                    position = ((logicalRow + 1) * cols) - visualCol;
+                                }
+                                // --- Position Calculation End ---
+
+
+                                // --- Render the Cell ---
+                                <div class="cell @(position % 2 == 0 ? "even" : "odd")" data-position="@position">
+                                    <span class="cell-number">@position</span>
+
+                                    @foreach (var player in Model.Players.Where(p => p.Position == position))
+                                    {
+                                        <div class="player-token" style="background-color: @player.TokenColor;" title="@player.Name"></div>
+                                    }
+                                </div>
+                            } // End Column Loop
+                        } // End Row Loop
+                    }                           
                             <!-- Draw snakes -->
                             @foreach (var snake in Model.Board.Snakes)
                             {
