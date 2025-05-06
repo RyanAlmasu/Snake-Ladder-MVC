@@ -125,7 +125,7 @@ namespace SnakeAndLadders.Core
             // AddLadder(4, 14);
             // AddLadder(9, 31);
             // AddLadder(21, 42);
-            // AddLadder(28, 84);
+            AddLadder(28, 84);
             AddLadder(36, 44);
             AddLadder(51, 67);
             AddLadder(71, 91);

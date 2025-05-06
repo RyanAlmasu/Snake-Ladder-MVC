@@ -3,3 +3,7 @@
 >>> User can input custom board, dice, snake, ladder
 >>> Class diagram ( Only MVC and GameEngine Library )
 >>> 
+
+>>> Understand all the codebase, how it works, why use that, how the game flow, 
+>>> understand the implementation each methods
+>>> And for all of the codebase must understand !
